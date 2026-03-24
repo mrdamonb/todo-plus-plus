@@ -13,6 +13,9 @@ export default function Sidebar({
     return tasks.filter(t => !t.completed && (wsId === 'all' ? true : t.workspaceId === wsId)).length
   }
 
+  const todayStart = new Date().setHours(0, 0, 0, 0)
+  const completedTodayCount = tasks.filter(t => t.completed && t.completedAt >= todayStart).length
+
   function handleSave() {
     if (wsName.trim()) {
       onAddWorkspace(wsName.trim(), wsEmoji || '📁')
@@ -29,6 +32,14 @@ export default function Sidebar({
       </div>
 
       <nav className="sidebar-nav">
+        <NavItem
+          active={view === 'today'}
+          onClick={() => setView('today')}
+          icon="📅"
+          label="Today"
+          count={completedTodayCount}
+          countGreen
+        />
         <NavItem
           active={view === 'tasks' && activeWorkspaceId === 'all'}
           onClick={() => { setView('tasks'); setActiveWorkspaceId('all') }}
@@ -123,7 +134,7 @@ export default function Sidebar({
   )
 }
 
-function NavItem({ active, onClick, icon, label, count, countGold, accentColor }) {
+function NavItem({ active, onClick, icon, label, count, countGold, countGreen, accentColor }) {
   return (
     <button
       className={`nav-item ${active ? 'active' : ''}`}
@@ -133,7 +144,9 @@ function NavItem({ active, onClick, icon, label, count, countGold, accentColor }
       <span className="nav-icon">{icon}</span>
       <span className="nav-label">{label}</span>
       {count > 0 && (
-        <span className={`nav-count ${countGold ? 'nav-count-gold' : ''}`}>{count}</span>
+        <span className={`nav-count ${countGold ? 'nav-count-gold' : ''} ${countGreen ? 'nav-count-green' : ''}`}>
+          {count}
+        </span>
       )}
     </button>
   )

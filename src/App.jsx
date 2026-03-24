@@ -5,6 +5,7 @@ import TaskInput from './components/TaskInput'
 import TaskItem from './components/TaskItem'
 import FocusMode from './components/FocusMode'
 import StatsView from './components/StatsView'
+import RecapView from './components/RecapView'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -248,7 +249,9 @@ export default function App() {
       />
 
       <main className="main-content">
-        {view === 'stats' ? (
+        {view === 'today' ? (
+          <RecapView tasks={tasks} workspaces={workspaces} />
+        ) : view === 'stats' ? (
           <StatsView tasks={tasks} workspaces={workspaces} />
         ) : (
           <>
